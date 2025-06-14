@@ -1,10 +1,15 @@
 from fastapi import FastAPI;
 from pydantic import BaseModel;
 from typing import List;
+from decouple import config;
+from supabase import create_client,Client;
+
+url=config("SUPABASE_URL")
+key=config("SUPABASE_KEY")
 
 
 app=FastAPI()
-
+supabase : Client =create_client(url,key)
 class Tea(BaseModel):
     id:int
     name:str
@@ -18,7 +23,8 @@ def read_root():
 
 @app.get("/teas")
 def  get_teas():
-    return teas
+    Tea=supabase.table("Teas").select("*").execute()
+    return Tea
 
 @app.post("/teas")
 def add_tea(tea:Tea):
