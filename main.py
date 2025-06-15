@@ -23,8 +23,14 @@ def read_root():
 
 @app.get("/teas")
 def  get_teas():
-    Tea=supabase.table("Teas").select("*").execute()
-    return Tea
+    Teas_data=supabase.table("Teas").select("*").execute()
+    return Teas_data
+
+@app.get("/tea${tea_id}")
+def get_tea(id:int):
+    tea_data=supabase.table("Teas").select("*").eq("id",id).execute()
+    return tea_data
+
 
 @app.post("/teas")
 def add_tea(tea:Tea):
