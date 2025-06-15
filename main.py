@@ -42,6 +42,13 @@ def add_tea(tea:Tea):
     }).execute()
     return created_tea
 
+@app.put("/teas/{id}")
+def update_tea(id:int ,change_tea:Tea):
+    updated_tea=supabase.table("Teas").update({
+        "name":change_tea.name,
+        "origin":change_tea.origin
+    }).eq("id",id).execute()
+    return updated_tea
 
 @app.delete("/teas/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def delete_tea(id:int):
