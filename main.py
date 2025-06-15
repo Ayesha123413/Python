@@ -42,18 +42,8 @@ def add_tea(tea:Tea):
     }).execute()
     return created_tea
 
-@app.put("/teas/{tea_id}")
-def update_tea(tea_id:int ,updated_tea:Tea):
-    for index,tea in enumerate(teas):
-        if tea.id==tea_id:
-            teas[index]=updated_tea
-            return updated_tea
-    return {"error":"Tea not found"}
 
-@app.delete("/teas/{tea_id}")
-def delete_tea(tea_id:int):
-    for index,tea in enumerate(teas):
-        if tea.id==tea_id:
-            deleted=teas.pop(index)
-            return deleted
-    return {"error":"tea not found"}
+@app.delete("/teas/{id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_tea(id:int):
+   supabase.table("Teas").delete().eq("id",id).execute()
+   return {"msg":"Deleted"}
